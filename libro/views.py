@@ -67,12 +67,12 @@ class Libro(APIView):
                     img_file = self.buildImage(json_data['foto'])
                     if(img_file != None):
                         unLibro.ruta_foto = img_file
+                        unLibro.save()
                     else:
                         raise Exception
-                    unLibro.save()
                     return Response({"confirmacion": "True"})
             except Exception as e:
-                return Response({"confirmacion": str(e)})
+                return Response({"confirmacion": "False"})
 
     # Modificar un libro
     # http://127.0.0.1:8000/api-libro/libro/
@@ -87,22 +87,21 @@ class Libro(APIView):
                     img_file = self.buildImage(json_data['foto'])
                     if(img_file != None):
                         unLibro.ruta_foto = img_file
+                        unLibro.save()
                     else:
                         raise Exception
-                    unLibro.save()
                     return Response({"confirmacion": "True"})
             except libro.DoesNotExist:
                 return Response({"confirmacion": "False"})
             except Exception as e:
                 return Response({"confirmacion": "False"})
 
-    def buildImage(self, base64):
+    def buildImage(self, base64img):
         try:
-            format, img_body = base64.split(";base64,")
+            format, img_body = base64img.split(";base64,")
             extension = format.split("/")[-1]
-            #now = datetime.now()
-            img_file = ContentFile(base64.b64decode(img_body), name = "fdf." + extension)
-            #img_file = ContentFile(base64.b64decode(img_body), name = "libro_f_" + str(now.year) +"-" + str(now.month) + str(now.day) + "-h-" + str(now.hour) + "-m-" + str(now.minute) +"-s-" + str(now.second) + "." + extension)
+            now = datetime.now()
+            img_file = ContentFile(base64.b64decode(img_body), name = "libro_f_" + str(now.year) +"-" + str(now.month) + str(now.day) + "-h-" + str(now.hour) + "-m-" + str(now.minute) +"-s-" + str(now.second) + "." + extension)
             return img_file
         except Exception as e:
             return None
