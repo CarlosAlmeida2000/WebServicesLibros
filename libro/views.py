@@ -47,16 +47,49 @@ class Libro(APIView):
                     unLibro = libro()
                     unLibro.nombre = json_data['nombre']
                     unLibro.descripcion = json_data['descripcion']
-                    image_b64 = json_data['foto']
-                    format, img_body = image_b64.split(";base64,")
-                    extension = format.split("/")[-1]
-                    now = datetime.now()
-                    img_file = ContentFile(base64.b64decode(img_body), name = "libro_f_" + str(now.year) +"-" + str(now.month) + str(now.day) + "-h-" + str(now.hour) + "-m-" + str(now.minute) +"-s-" + str(now.second) + "." + extension)
-                    unLibro.ruta_foto = img_file
+                    unLibro.ruta_foto = self.buildImage(json_data['foto'])
                     unLibro.save()
                     return Response({"confirmacion": "True"})
             except Exception as e:
                 return Response({"confirmacion": "False"})
 
+    # Registrar un libro
+    # http://127.0.0.1:8000/api-libro/libro/
+    def post(self, request, format = None):
+        if request.method == 'POST':
+            try:
+                with transaction.atomic():
+                    json_data = json.loads(request.body.decode('utf-8'))
+                    unLibro = libro()
+                    unLibro.nombre = json_data['nombre']
+                    unLibro.descripcion = json_data['descripcion']
+                    unLibro.ruta_foto = self.buildImage(json_data['foto'])
+                    unLibro.save()
+                    return Response({"confirmacion": "True"})
+            except Exception as e:
+                return Response({"confirmacion": "False"})
+
+    # Modificar un libro
+    # http://127.0.0.1:8000/api-libro/libro/
+    def put(self, request, format = None):
+        if request.method == 'PUT':
+            try:
+                with transaction.atomic():
+                    json_data = json.loads(request.body.decode('utf-8'))
+                    unLibro = libro.objects.get(id = json_data['libro_id'])
+                    unLibro.nombre = json_data['nombre']
+                    unLibro.descripcion = json_data['descripcion']
+                    unLibro.ruta_foto = self.buildImage(json_data['foto'])
+                    unLibro.save()
+                    return Response({"confirmacion": "True"})
+            except Exception as e:
+                return Response({"confirmacion": "False"})
+
+    def buildImage(self, base64):
+        format, img_body = base64.split(";base64,")
+        extension = format.split("/")[-1]
+        now = datetime.now()
+        img_file = ContentFile(base64.b64decode(img_body), name = "libro_f_" + str(now.year) +"-" + str(now.month) + str(now.day) + "-h-" + str(now.hour) + "-m-" + str(now.minute) +"-s-" + str(now.second) + "." + extension)
+        return img_file
 
 
