@@ -72,7 +72,7 @@ class Libro(APIView):
                     unLibro.save()
                     return Response({"confirmacion": "True"})
             except Exception as e:
-                return Response({"confirmacion": "False"})
+                return Response({"confirmacion": "False" + str(e)})
 
     # Modificar un libro
     # http://127.0.0.1:8000/api-libro/libro/
