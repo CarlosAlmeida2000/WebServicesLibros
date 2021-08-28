@@ -14,13 +14,30 @@ class Libro(APIView):
             if request.method == "GET":
                 try:
                     json_libro = list()
-                    for h in libro.objects.all():    
-                        object_json = self.buildJsonLibro(h)
+                    if('id' in request.GET):
+                        unLibro = libro.objects.get(id = request.GET['id'])
+                        object_json = self.buildJsonLibro(unLibro)
                         if(object_json != None):
                             json_libro.append(object_json)
+                            return Response({"libro": json_libro})
                         else:
                             raise Exception
-                    return Response({"consulta": json_libro})
+                    elif('libro' in request.GET):
+                        unLibro = libro.objects.get(usuario = request.GET['usuario'])
+                        object_json = self.buildJsonLibro(unLibro)
+                        if(object_json != None):
+                            json_libro.append(object_json)
+                            return Response({"libro": json_libro})
+                        else:
+                            raise Exception
+                    else:
+                        for h in libro.objects.all():    
+                            object_json = self.buildJsonLibro(h)
+                            if(object_json != None):
+                                json_libro.append(object_json)
+                            else:
+                                raise Exception
+                        return Response({"libro": json_libro})
                 except Exception as ex:
                     return Response({"mensaje": "Ups, sucedió un error al obtener los datos, por favor intente de nuevo."})
 
@@ -63,9 +80,15 @@ class Libro(APIView):
                     unLibro = libro.objects.get(id = json_data['libro_id'])
                     unLibro.nombre = json_data['nombre']
                     unLibro.descripcion = json_data['descripcion']
-                    unLibro.ruta_foto = self.buildImage(json_data['foto'])
+                    img_file = self.buildImage(json_data['foto'])
+                    if(img_file != None):
+                        unLibro.ruta_foto = img_file
+                    else:
+                        raise Exception
                     unLibro.save()
                     return Response({"confirmacion": "True"})
+            except libro.DoesNotExist:
+                return Response({"confirmacion": "False"})
             except Exception as e:
                 return Response({"confirmacion": "False"})
 
@@ -81,7 +104,7 @@ class Libro(APIView):
 
     # Eliminar un libro
     # http://127.0.0.1:8000/api-libro/libro/
-    def put(self, request, format = None):
+    def delete(self, request, format = None):
         if request.method == 'DELETE':
             try:
                 with transaction.atomic():
@@ -91,6 +114,8 @@ class Libro(APIView):
                     os.remove(ruta_img_borrar)
                     unLibro.delete()
                     return Response({"confirmacion": "True"})
+            except libro.DoesNotExist:
+                return Response({"confirmacion": "False"})
             except Exception as e:
                 return Response({"confirmacion": "False"})
 
