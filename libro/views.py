@@ -100,9 +100,8 @@ class Libro(APIView):
         try:
             format, img_body = base64img.split(";base64,")
             extension = format.split("/")[-1]
-            #now = datetime.now()
-            img_file = ContentFile(base64.b64decode(img_body), name = "fdf." + extension)
-            #img_file = ContentFile(base64.b64decode(img_body), name = "libro_f_" + str(now.year) +"-" + str(now.month) + str(now.day) + "-h-" + str(now.hour) + "-m-" + str(now.minute) +"-s-" + str(now.second) + "." + extension)
+            now = datetime.now()
+            img_file = ContentFile(base64.b64decode(img_body), name = "libro_f_" + str(now.year) +"-" + str(now.month) + str(now.day) + "-h-" + str(now.hour) + "-m-" + str(now.minute) +"-s-" + str(now.second) + "." + extension)
             return img_file
         except Exception as e:
             return None
@@ -116,7 +115,7 @@ class Libro(APIView):
                     json_data = json.loads(request.body.decode('utf-8'))
                     unLibro = libro.objects.get(id = json_data['libro_id'])
                     ruta_img_borrar = unLibro.ruta_foto.url[1:]
-                    os.remove(ruta_img_borrar)
+                    os.remove(ruta_img_borrar) 
                     unLibro.delete()
                     return Response({"confirmacion": "True"})
             except libro.DoesNotExist:
