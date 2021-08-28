@@ -84,9 +84,11 @@ class Libro(APIView):
                     unLibro = libro.objects.get(id = json_data['libro_id'])
                     unLibro.nombre = json_data['nombre']
                     unLibro.descripcion = json_data['descripcion']
+                    ruta_img_borrar = unLibro.ruta_foto.url[1:]
                     img_file = self.buildImage(json_data['foto'])
                     if(img_file != None):
                         unLibro.ruta_foto = img_file
+                        os.remove(ruta_img_borrar) 
                         unLibro.save()
                     else:
                         raise Exception
@@ -105,22 +107,4 @@ class Libro(APIView):
             return img_file
         except Exception as e:
             return None
-
-    # Eliminar un libro
-    # http://127.0.0.1:8000/api-libro/libro/
-    def delete(self, request, format = None):
-        if request.method == 'DELETE':
-            try:
-                with transaction.atomic():
-                    json_data = json.loads(request.body.decode('utf-8'))
-                    unLibro = libro.objects.get(id = json_data['libro_id'])
-                    ruta_img_borrar = unLibro.ruta_foto.url[1:]
-                    os.remove(ruta_img_borrar) 
-                    unLibro.delete()
-                    return Response({"confirmacion": "True"})
-            except libro.DoesNotExist:
-                return Response({"confirmacion": "False no exise"})
-            except Exception as e:
-                return Response({"confirmacion": "False " + str(e)})
-
 
