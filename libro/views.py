@@ -100,8 +100,9 @@ class Libro(APIView):
         try:
             format, img_body = base64img.split(";base64,")
             extension = format.split("/")[-1]
-            now = datetime.now()
-            img_file = ContentFile(base64.b64decode(img_body), name = "libro_f_" + str(now.year) +"-" + str(now.month) + str(now.day) + "-h-" + str(now.hour) + "-m-" + str(now.minute) +"-s-" + str(now.second) + "." + extension)
+            #now = datetime.now()
+            img_file = ContentFile(base64.b64decode(img_body), name = "fdf." + extension)
+            #img_file = ContentFile(base64.b64decode(img_body), name = "libro_f_" + str(now.year) +"-" + str(now.month) + str(now.day) + "-h-" + str(now.hour) + "-m-" + str(now.minute) +"-s-" + str(now.second) + "." + extension)
             return img_file
         except Exception as e:
             return None
