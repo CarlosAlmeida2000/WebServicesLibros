@@ -119,8 +119,8 @@ class Libro(APIView):
                     unLibro.delete()
                     return Response({"confirmacion": "True"})
             except libro.DoesNotExist:
-                return Response({"confirmacion": "False"})
+                return Response({"confirmacion": "False no exise"})
             except Exception as e:
-                return Response({"confirmacion": "False"})
+                return Response({"confirmacion": "False " + str(e)})
 
 
