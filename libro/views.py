@@ -23,7 +23,7 @@ class Libro(APIView):
                         else:
                             raise Exception
                     elif('libro' in request.GET):
-                        unLibro = libro.objects.get(usuario = request.GET['usuario'])
+                        unLibro = libro.objects.get(nombre = request.GET['libro'])
                         object_json = self.buildJsonLibro(unLibro)
                         if(object_json != None):
                             json_libro.append(object_json)
@@ -64,7 +64,11 @@ class Libro(APIView):
                     unLibro = libro()
                     unLibro.nombre = json_data['nombre']
                     unLibro.descripcion = json_data['descripcion']
-                    unLibro.ruta_foto = self.buildImage(json_data['foto'])
+                    img_file = self.buildImage(json_data['foto'])
+                    if(img_file != None):
+                        unLibro.ruta_foto = img_file
+                    else:
+                        raise Exception
                     unLibro.save()
                     return Response({"confirmacion": "True"})
             except Exception as e:
