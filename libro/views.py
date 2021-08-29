@@ -46,7 +46,7 @@ class Libro(APIView):
             encoded_string = "data:image/PNG;base64," + str(base64.b64encode(open(str(libro.ruta_foto.url)[1:], "rb").read()))[2:][:-1]
             un_libro = {
                 "libro_id": libro.id,
-                "nombre": libro.nombre,
+                "libro": libro.nombre,
                 "descripcion": libro.descripcion,
                 "foto": encoded_string
             }
