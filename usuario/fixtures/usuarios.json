@@ -11,7 +11,7 @@
     },
     {
         "model": "usuario.usuarios",
-        "pk": 1,
+        "pk": 2,
         "fields": {
           "nombre": "Darlyn Buenaño",
           "rol": "AD",
@@ -21,7 +21,7 @@
     },
     {
         "model": "usuario.usuarios",
-        "pk": 1,
+        "pk": 3,
         "fields": {
           "nombre": "Henry Pérez",
           "rol": "AD",
@@ -31,7 +31,7 @@
     },
     {
         "model": "usuario.usuarios",
-        "pk": 1,
+        "pk": 4,
         "fields": {
           "nombre": "John Plazarte",
           "rol": "AD",
