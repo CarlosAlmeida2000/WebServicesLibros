@@ -1,0 +1,42 @@
+[
+    {
+      "model": "usuario.usuarios",
+      "pk": 1,
+      "fields": {
+        "nombre": "Carlos almeida",
+        "rol": "AD",
+        "usuario": "calmeidad",
+        "clave": "123456"
+      }
+    },
+    {
+        "model": "usuario.usuarios",
+        "pk": 1,
+        "fields": {
+          "nombre": "Darlyn Buenaño",
+          "rol": "AD",
+          "usuario": "dbuenanov",
+          "clave": "123456"
+        }
+    },
+    {
+        "model": "usuario.usuarios",
+        "pk": 1,
+        "fields": {
+          "nombre": "Henry Pérez",
+          "rol": "AD",
+          "usuario": "hperezm",
+          "clave": "123456"
+        }
+    },
+    {
+        "model": "usuario.usuarios",
+        "pk": 1,
+        "fields": {
+          "nombre": "John Plazarte",
+          "rol": "AD",
+          "usuario": "jplazartes",
+          "clave": "123456"
+        }
+    }
+  ]
