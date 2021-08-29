@@ -142,19 +142,16 @@ class Login(APIView):
                 json_usuario = list()
                 json_data = json.loads(request.body.decode('utf-8'))
                 unUsuario = usuarios.objects.get(usuario = json_data['usuario'])
-                if(unUsuario.estado != False):
-                    if(unUsuario.clave == json_data['clave']):
-                        apiViewUsuario = usuarios()
-                        object_json = apiViewUsuario.buildJsonUsuario(unUsuario)
-                        if(object_json != None):
-                            json_usuario.append(object_json)
-                            return Response({"usuario": json_usuario})
-                        else:
-                            raise Exception
+                if(unUsuario.clave == json_data['clave']):
+                    apiViewUsuario = usuarios()
+                    object_json = apiViewUsuario.buildJsonUsuario(unUsuario)
+                    if(object_json != None):
+                        json_usuario.append(object_json)
+                        return Response({"usuario": json_usuario})
                     else:
-                        return Response({"mensaje": "La clave es incorrecta."})
+                        raise Exception
                 else:
-                    return Response({"mensaje": "El usuario se encuentra deshabilitado."})
+                    return Response({"mensaje": "La clave es incorrecta."})
             except usuarios.DoesNotExist:
                 return Response({"mensaje": "No existe el usuario."})
             except Exception as e:  
