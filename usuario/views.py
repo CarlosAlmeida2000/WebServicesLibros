@@ -155,7 +155,7 @@ class Login(APIView):
             except usuarios.DoesNotExist:
                 return Response({"mensaje": "No existe el usuario."})
             except Exception as e:  
-                return Response({"mensaje": "Sucedió un error al verificar el usuario, por favor intente nuevamente."})
+                return Response({"mensaje": "Sucedió un error al verificar el usuario, por favor intente nuevamente. " + str(e)})
     
     
 
